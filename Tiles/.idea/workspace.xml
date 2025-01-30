@@ -5,13 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="95cd05a1-e785-434f-83a6-fa55ea56dadb" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Tiles.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Board.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Display.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Display.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/InputState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/InputState.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MainGameLoop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MainGameLoop.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Score.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Score.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Tiles.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Tiles.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
