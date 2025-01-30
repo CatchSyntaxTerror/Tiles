@@ -16,7 +16,8 @@ public class Display {
     private final int SCREEN_HEIGHT = 500;
     private final int SCREEN_WIDTH = 500;
     private final int NUM_ROWS = 5;
-    private final int NUM_COLS = 6;
+    private final int NUM_COLS = 6;4
+    
     public void setStage(Stage stage) {
         stage.setTitle("Tiles");
         StackPane root = new StackPane();
