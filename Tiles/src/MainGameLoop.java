@@ -1,19 +1,18 @@
-public class MainGameLoop {
-    private Board board;
-    private Score score;
-    private InputState inputState;
-    private Display display;
-    public MainGameLoop() {
-        board = new Board();
-        score = new Score();
-        inputState = new InputState();
-        display = new Display();
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+
+public class MainGameLoop extends Application {
+
+    private final Display display = new Display();
+
+    @Override
+    public void start(Stage primaryStage) {
+        display.setStage(primaryStage);
     }
 
-    public void startGame() {
-    }
     public static void main(String[] args) {
-        MainGameLoop game = new MainGameLoop();
-        game.startGame();
+        launch();
     }
 }
