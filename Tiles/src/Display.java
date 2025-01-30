@@ -31,12 +31,13 @@ public class Display {
         colors.put(Color.web("#A1887F"), 0); // Brown
         colors.put(Color.web("#F06292"), 0); // Pink
         colors.put(Color.web("#7986CB"), 0); // Indigo
-        colors.put(Color.web("#D32F2F"), 0); // Vibrant Red (instead of duplicate orange)
+        colors.put(Color.web("#D32F2F"), 0); // Vibrant Red
         colors.put(Color.web("#AED581"), 0); // Light Green
         colors.put(Color.web("#00838F"), 0); // Dark Cyan
         colors.put(Color.web("#546E7A"), 0); // Steel Grey
         colors.put(Color.web("#007FFF"), 0); // Electric Blue
     }
+
     public void setStage(Stage stage) {
         stage.setTitle("Tiles");
         StackPane root = new StackPane();
@@ -49,14 +50,11 @@ public class Display {
 
     private GridPane makeGrid() {
 
-
         GridPane gp = new GridPane();
         gp.setBackground(new Background(new BackgroundFill(
-                web("#2E3B4E"), CornerRadii.EMPTY , Insets.EMPTY)));
+                web("#2E3B4E"), CornerRadii.EMPTY, Insets.EMPTY)));
         gp.setHgap(4);
         gp.setVgap(4);
-
-        int colorIndex = 0;
 
         for (int row = 0; row < NUM_ROWS; row++) {
             for (int col = 0; col < NUM_COLS; col++) {
@@ -67,7 +65,6 @@ public class Display {
                 Color cirColor = colors.get(1);
                 Color triColor = colors.get(2);
 
-                int n = row * NUM_COLS + col;
 
                 Rectangle rect = new Rectangle(80, 100,
                         sqColor);
@@ -79,6 +76,7 @@ public class Display {
                         0.0, -25.0, -20.0, 20.0, 20.0, 20.0);
                 triangle.setFill(triColor);
 
+                //Creates the eyes o_O
                 Circle Outer = new Circle(10, Color.WHITE);
                 Circle iris = new Circle(6, web("#4B8B9B"));
                 Circle pupil = new Circle(4, Color.BLACK);
@@ -92,11 +90,11 @@ public class Display {
         return gp;
     }
 
-    private List<Color> getColors(){
+    private List<Color> getColors() {
         List<Color> newColors = new ArrayList<>();
 
         for (Map.Entry<Color, Integer> entry : colors.entrySet()) {
-            if (entry.getValue() < 18) {
+            if (entry.getValue() < 7) {
                 newColors.add(entry.getKey());
             }
         }
@@ -119,4 +117,4 @@ public class Display {
 
         return Arrays.asList(sqColor, cirColor, triColor);
     }
-    }
+}
