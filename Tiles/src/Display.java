@@ -11,6 +11,12 @@ import java.util.*;
 
 import static javafx.scene.paint.Color.web;
 
+/**
+ * Youssef Amin
+ * This class is meant to update the display of the game
+ */
+
+//TODO: MY CODE IS GARBAGE
 public class Display {
     private final int SCREEN_HEIGHT = 500;
     private final int SCREEN_WIDTH = 500;
