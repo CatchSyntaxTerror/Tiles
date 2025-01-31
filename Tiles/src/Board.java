@@ -1,5 +1,3 @@
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.layout.*;
@@ -45,6 +43,8 @@ public class Board extends GridPane {
         colors.put(Color.web("#00838F"), 0); // Dark Cyan
         colors.put(Color.web("#546E7A"), 0); // Steel Grey
         colors.put(Color.web("#007FFF"), 0); // Electric Blue
+
+
     }
 
     public GridPane makeGrid() {
@@ -58,17 +58,17 @@ public class Board extends GridPane {
 
         for (int row = 0; row < NUM_ROWS; row++) {
             for (int col = 0; col < NUM_COLS; col++) {
-                List<Color> colors = getColors();
+                List<Color> colors = setColors();
                 Tiles tile = new Tiles(colors.get(0), colors.get(1), colors.get(2));
                 gp.add(tile, col, row);
-
-
             }
         }
+
         return gp;
     }
 
-    private List<Color> getColors() {
+    //TODO: Fix color problem
+    private List<Color> setColors() {
         List<Color> newColors = new ArrayList<>();
 
         for (Map.Entry<Color, Integer> entry : colors.entrySet()) {
@@ -94,6 +94,7 @@ public class Board extends GridPane {
     }
 
     public static void updateEyeDirection(double mouseX, double mouseY) {
+
         for (Node node : gp.getChildren()) {
             if (node instanceof Tiles tile) {
                 tile.updateEyeDirectionTile(mouseX, mouseY);
@@ -101,15 +102,18 @@ public class Board extends GridPane {
         }
     }
 
-    //TODO: Implement toggle selection.
-    public boolean pickTile(Tiles tile) {
-        return false;
+    //TODO: Implement toggle selection. Use Selected tiles list.
+    private void pickTile(Tiles tile) {
+        if(selectedTiles.size() < 2) {
+            selectedTiles.add(tile);
+            System.out.println("Ouch");
+        } else {
+            System.out.println("Enough Already");
+        }
     }
 
     //TODO: Implement removeSimilar.
     private void removeSimilar() {
 
     }
-
-
 }
