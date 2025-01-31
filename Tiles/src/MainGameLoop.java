@@ -1,6 +1,11 @@
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+/**
+ * Youssef Amin
+ * TODO: Write comments
+ */
+
 public class MainGameLoop extends Application {
 
     @Override

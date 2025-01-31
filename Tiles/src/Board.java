@@ -1,3 +1,5 @@
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.layout.*;
@@ -8,12 +10,20 @@ import java.util.*;
 
 import static javafx.scene.paint.Color.web;
 
-//TODO: PUT ALL THE BOARD STUFF HERE
+/**
+ * Youssef Amin
+ * TODO: Write comments
+ */
+
 public class Board extends GridPane {
 
     private final int NUM_ROWS = 5;
     private final int NUM_COLS = 6;
     private final Map<Color, Integer> colors = new HashMap<>();
+
+    private static GridPane gp;
+
+    private List<Tiles> selectedTiles = new ArrayList<>();
 
     public Board() {
         fillMap();
@@ -28,7 +38,6 @@ public class Board extends GridPane {
         colors.put(Color.web("#F28C28"), 0); // Distinct Orange
         colors.put(Color.web("#4DB6AC"), 0); // Teal
         colors.put(Color.web("#9575CD"), 0); // Deep Purple
-        colors.put(Color.web("#A1887F"), 0); // Brown
         colors.put(Color.web("#F06292"), 0); // Pink
         colors.put(Color.web("#7986CB"), 0); // Indigo
         colors.put(Color.web("#D32F2F"), 0); // Vibrant Red
@@ -40,9 +49,10 @@ public class Board extends GridPane {
 
     public GridPane makeGrid() {
 
-        GridPane gp = new GridPane();
+        gp = new GridPane();
         gp.setBackground(new Background(new BackgroundFill(
                 web("#2E3B4E"), CornerRadii.EMPTY, Insets.EMPTY)));
+        gp.setPadding(new Insets(10, 5, 5, 5));
         gp.setHgap(4);
         gp.setVgap(4);
 
@@ -51,6 +61,8 @@ public class Board extends GridPane {
                 List<Color> colors = getColors();
                 Tiles tile = new Tiles(colors.get(0), colors.get(1), colors.get(2));
                 gp.add(tile, col, row);
+
+
             }
         }
         return gp;
@@ -60,7 +72,7 @@ public class Board extends GridPane {
         List<Color> newColors = new ArrayList<>();
 
         for (Map.Entry<Color, Integer> entry : colors.entrySet()) {
-            if (entry.getValue() < 18) {
+            if (entry.getValue() < 7) {
                 newColors.add(entry.getKey());
             }
         }
@@ -80,5 +92,24 @@ public class Board extends GridPane {
 
         return Arrays.asList(sqColor, cirColor, triColor);
     }
+
+    public static void updateEyeDirection(double mouseX, double mouseY) {
+        for (Node node : gp.getChildren()) {
+            if (node instanceof Tiles tile) {
+                tile.updateEyeDirectionTile(mouseX, mouseY);
+            }
+        }
+    }
+
+    //TODO: Implement toggle selection.
+    public boolean pickTile(Tiles tile) {
+        return false;
+    }
+
+    //TODO: Implement removeSimilar.
+    private void removeSimilar() {
+
+    }
+
 
 }
