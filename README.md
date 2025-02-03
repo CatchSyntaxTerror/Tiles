@@ -85,8 +85,7 @@ Handling eye movement in this manner omits the overuse of for each loops and Ins
 
 ## Known Bugs
 The Only bugs I really have is that the tile size does not change so when you go full 
-screen they are just evenly spaced out.
-It is also technically impossible to get a perfect streak since when a stack runs out of 
-shapes the streak is broke.
+screen they are just evenly spaced out and transparent shapes can count toward streak.
+No big deal as long as you play honestly 0_o.
 I believe everything else should be working as it should.
 
