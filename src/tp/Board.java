@@ -190,6 +190,12 @@ public class Board extends GridPane {
         }
     }
 
+    /**
+     * Assumes game is over and then checks for any none Transparent
+     * shapes.
+     * Relavent shapes are the first 3 shapes in the stack pane.
+     * @return boolean all gone. True until proven false
+     */
     public static boolean isGameOver() {
         boolean allGone = true;
         for (Node node : gp.getChildren()) {
