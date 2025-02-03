@@ -1,4 +1,4 @@
-# Empty Project Template
+Project-1
 
 Inside your project you should have the following structure:
 ## At the top level:
