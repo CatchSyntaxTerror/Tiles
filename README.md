@@ -1,6 +1,5 @@
 Project-1
 
-Inside your project you should have the following structure:
 ## At the top level:
 ### README.md
 This file right here. Make sure you edit it to describe your project
