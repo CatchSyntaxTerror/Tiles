@@ -4,15 +4,24 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Shape;
 
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 import static javafx.scene.paint.Color.web;
 
 /**
  * Youssef Amin
- * TODO: Write comments
+ * I'm Just sorry on this one. I learned my lesson.
+ * Plan and then execute. It is not easy to fix teh structure of the entire
+ * game after it has been written.
+ * Board is meant to essentially be the Grid pane.
+ * It also handles picking colors and is a bridge from tiles to display.
+ * I think this could all go in tiles, but I wasn't sure,and I'm tired
  */
 
 public class Board extends GridPane {
@@ -23,11 +32,16 @@ public class Board extends GridPane {
     private final Map<Color, Integer> cirColors = new HashMap<>();
     private final Map<Color, Integer> triColors = new HashMap<>();
     private static GridPane gp;
+
+    /**
+     * Constructor for Board.
+     * fills each map with respective colors with fillMaps()
+     */
     public Board() {
-        fillMap();
+        fillMaps();
     }
 
-    private void fillMap() {
+    private void fillMaps() {
         //colors taken from uncle Chad
         sqColors.put(web("#D94F4F"), 0); // Deep Red
         sqColors.put(web("#D67D3E"), 0); // Burnt Orange
@@ -58,6 +72,11 @@ public class Board extends GridPane {
         triColors.put(web("#6D4E5C"), 0); // Dusky Rosewood
     }
 
+    /**
+     * this creats the gridPane and adds all the tiles to it.
+     *
+     * @return the grid used to hold tiles.
+     */
     public GridPane makeGrid() {
 
         gp = new GridPane();
@@ -70,7 +89,7 @@ public class Board extends GridPane {
         for (int row = 0; row < NUM_ROWS; row++) {
             for (int col = 0; col < NUM_COLS; col++) {
                 List<Color> colors = setColors();
-                Tiles tile = new Tiles(colors.get(0), colors.get(1), colors.get(2), gp);
+                Tiles tile = new Tiles(colors.get(0), colors.get(1), colors.get(2));
                 gp.add(tile, col, row);
             }
         }
@@ -78,7 +97,21 @@ public class Board extends GridPane {
         return gp;
     }
 
-    //TODO: Fix color problem
+    /**
+     * This method was basically the Hydra.
+     * Everytime I thought I finished it two more problems came up.
+     * Essentially I did some math to get the appropriate amount of pairs if colors
+     * made three separate maps to hold respective color pools to each list
+     * then added them to respective lists and shuffled the list. This way there
+     * would always be an even number of each color.
+     * the maps also link an integer value with each color. I incremented it
+     * as to not allow more than 2 pairs of each color.
+     * I picked the first color from each shuffled list until all the colors
+     * needed are picked. this always results in even pairs but more math would have to
+     * be done if I needed to add more tiles. I'm sure I could make an equation but um....
+     *
+     * @return List of three colors, one for each shape.
+     */
     private List<Color> setColors() {
 
         List<Color> newSqColors = new ArrayList<>();
@@ -119,12 +152,57 @@ public class Board extends GridPane {
         return Arrays.asList(sqColor, cirColor, triColor);
     }
 
-
+    /**
+     * this is a bridge for the eye's movement. In order to get the eyes to
+     * all follow the mouse as if they were one I had to set the
+     * mouse listener to the scene, but locateToScene(), used in Tiles,
+     * does not provide the points for the scene only the node or eye in this case
+     * This method allows display to get the points or eyes' placement.
+     *
+     * @param mouseX the mouse's x component
+     * @param mouseY the mouse's y component
+     */
     public static void updateEyeDirection(double mouseX, double mouseY) {
         for (Node node : gp.getChildren()) {
             if (node instanceof Tiles tile) {
                 tile.updateEyeDirectionTile(mouseX, mouseY);
             }
         }
+    }
+
+    /**
+     * this method dynamically changes the size of the grid with the size of the
+     * scene it works well but the tile sizes don't change, so it basically just spaces
+     * out the tiles so the whole screen is filled. works for full screen.
+     *
+     * @param sceneWidth  the width of the scene from Display
+     * @param sceneHeight the height of the scene from Display
+     */
+    public void setGridSize(double sceneWidth, double sceneHeight) {
+        double tileSize = ((sceneWidth / NUM_COLS) * (sceneHeight / NUM_ROWS));
+        gp.setHgap(sceneWidth * 0.07);
+        gp.setVgap(sceneHeight * 0.05);
+
+        for (Node node : gp.getChildren()) {
+            if (node instanceof Tiles tile) {
+                tile.updateTileSize(tileSize);
+            }
+        }
+    }
+
+    public static boolean isGameOver() {
+        boolean allGone = true;
+        for (Node node : gp.getChildren()) {
+            if (node instanceof Tiles tile) {
+                for (int i = 0; i < 3; i++) {
+                    Node node1 = tile.getChildren().get(i);
+                    if (node1 instanceof Shape shape &&
+                            !shape.getFill().equals(Color.TRANSPARENT)) {
+                        allGone = false;
+                    }
+                }
+            }
+        }
+        return allGone;
     }
 }

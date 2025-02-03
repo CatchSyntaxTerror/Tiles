@@ -20,76 +20,47 @@ public class Tiles extends StackPane {
     private final Color triColor;
     private final Color cirColor;
     private final Color sqColor;
+    private static MainGameLoop gameLoop;
     private final double SCALE_MULTIPLIER = .9;
-    private static Display display;
+
+    int RECTANGLE_HEIGHT = (int)(100 * SCALE_MULTIPLIER);
+    int RECTANGLE_WIDTH = (int)(79 * SCALE_MULTIPLIER);
     private final double[] TRIANGLE_POINTS =
             {0.0, -25.0 * SCALE_MULTIPLIER, -20.0 * SCALE_MULTIPLIER,
                     20.0 * SCALE_MULTIPLIER, 20.0 * SCALE_MULTIPLIER,
                     20.0 * SCALE_MULTIPLIER};
-    private Boolean selected = false;
     private Circle pupil;
     private Circle iris;
     private StackPane eyeStack;
     private Rectangle rect;
     private Circle circle;
     private Polygon triangle;
-    private GridPane pane;
     private static StackPane tile1 = null;
     private static StackPane tile2 = null;
+    private boolean matched;
+    private double tileSize = RECTANGLE_WIDTH * RECTANGLE_HEIGHT;
 
-    private static List<Tiles> clickedTiles = new ArrayList<>();
+    /**
+     * constructor for tiles. basically the stack pane.
+     * @param sqColor the color of each square
+     * @param cirColor the color fo each circle
+     * @param triColor the color of each triangle
+     */
+    public Tiles(Color sqColor, Color cirColor, Color triColor) {
 
-    private static int score = 74;
-    private static int streak = 0;
-
-    private static int longestStreak = 0;
-
-
-    public Tiles(Color sqColor, Color cirColor, Color triColor, GridPane pane) {
         this.cirColor = cirColor;
         this.triColor = triColor;
         this.sqColor = sqColor;
-        this.pane = pane;
 
-        makeTiles();
+        makeTiles(tileSize);
 
         this.setOnMouseClicked(e -> handleClicks());
-
-
     }
+
 
     /**
-     * These four methods are here to update score and streak
-     * @return
+     *
      */
-    public static int getScore() {
-        if(score >= 70){
-            Display.gameOver();
-        }
-        return score;
-    }
-
-    public static int getStreak() {
-        return streak;
-    }
-
-    public static int getLongestStreak() {
-        return longestStreak;
-    }
-
-    public static void newLongestStreak() {
-        if (streak > longestStreak) {
-            longestStreak = streak;
-            Display.updateLongestStreak(); // ✅ Now updates when streak is the highest
-        }
-    }
-
-    public static void setDisplay(Display displayScore) {
-        display = displayScore;
-    }
-
-
-    //TODO: Something is broken with the deselection
     public void handleClicks() {
         if (tile1 == null) {
             tile1 = this;
@@ -101,27 +72,24 @@ public class Tiles extends StackPane {
             //System.out.println("I, " + tile2 + " am tile 2");
 
             if (checkAndRemove(tile1, tile2)) {
-                score++;
-                streak++;
                 isUnselected(tile1);
                 tile1 = tile2;
                 tile2 = null;
-                Display.updateStreak();
-                Display.updateScore();
+                MainGameLoop.updateScore();
+                MainGameLoop.updateStreak(matched);
 //                System.out.println(tile1 + " is now " + tile2);
             } else {
                 isUnselected(tile1);
                 isUnselected(tile2);
-                newLongestStreak();
+                MainGameLoop.updateStreak(matched);
                 tile1 = null;
                 tile2 = null;
-                streak = 0;
 //                System.out.println("No match. Resetting selection.");
             }
         } else if (tile1 == this) {
             isUnselected(tile1);
             tile1 = null;
-            streak = 0;
+           MainGameLoop.updateStreak(false);
 //            System.out.println("tile 1 is now null");
         } else if (tile2 == this) {
             isUnselected(tile2);
@@ -135,7 +103,7 @@ public class Tiles extends StackPane {
         Tiles tileShapes1 = (Tiles) tile1;
         Tiles tileShapes2 = (Tiles) tile2;
 
-        boolean matched = false;
+        matched = false;
 
         if (tileShapes1.rect.getFill().equals(tileShapes2.rect.getFill())) {
             tileShapes1.rect.setFill(Color.TRANSPARENT);
@@ -192,7 +160,8 @@ public class Tiles extends StackPane {
     }
 
 
-    private void makeTiles() {
+    private void makeTiles(double tileSize) {
+        this.getChildren().clear();
 
         int RECTANGLE_HEIGHT = (int)(100 * SCALE_MULTIPLIER);
         int RECTANGLE_WIDTH = (int)(79 * SCALE_MULTIPLIER);
@@ -229,10 +198,12 @@ public class Tiles extends StackPane {
         Circle outer = new Circle(OUTER_SIZE, Color.WHITE);
         outer.setStroke(Color.BLACK);
         outer.setStrokeWidth(.5);
+
         int IRISE_SIZE = (int)(6 * SCALE_MULTIPLIER);
         iris = new Circle(IRISE_SIZE, web("#4B8B9B"));
         iris.setStroke(Color.BLACK);
         iris.setStrokeWidth(.5);
+
         int PUPIL_SIZE = (int)(4 * SCALE_MULTIPLIER);
         pupil = new Circle(PUPIL_SIZE, Color.BLACK);
         pupil.setStroke(Color.BLACK);
@@ -242,6 +213,23 @@ public class Tiles extends StackPane {
         return eyeStack;
     }
 
+    /**
+     * I tried to make the tiles grow with the screen, but to no avail.
+     * @param tileSize the size id like tiles to be.
+     */
+    public void updateTileSize(double tileSize) {
+        this.tileSize = tileSize;
+        makeTiles(tileSize);
+    }
+
+    /**
+     * Calculates strait line from pupil to mouse. and allows the eye to move
+     * toward it just enough to stay in its own lane.
+     * before I used Math.min() I had some weird behavior
+     * It's too late now, but I think some cool mechanics could be added.
+     * @param mouseX
+     * @param mouseY
+     */
     public void updateEyeDirectionTile(double mouseX, double mouseY) {
 
         double eyeCenterX = eyeStack.localToScene(0, 0).getX();
@@ -253,11 +241,10 @@ public class Tiles extends StackPane {
         double distance = Math.sqrt(x * x + y * y);
         double maxDistance = 4 * SCALE_MULTIPLIER;
 
-        double scale = (distance > 0) ? Math.min(maxDistance / distance, 1) : 0;
+        double scale = (distance > 0) ? Math.min(maxDistance / distance, 0.04) : 0;
         iris.setTranslateX(x * scale);
         iris.setTranslateY(y * scale);
         pupil.setTranslateX(x * scale * 1.2);
         pupil.setTranslateY(y * scale * 1.2);
     }
-
 }
