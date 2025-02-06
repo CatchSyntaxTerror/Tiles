@@ -86,5 +86,5 @@ Handling eye movement in this manner omits the overuse of for each loops and Ins
 The Only bugs I really have is that the tile size does not change so when you go full 
 screen they are just evenly spaced out and transparent shapes can count toward streak.
 No big deal as long as you play honestly 0_o.
-I believe everything else should be working as it should.
+On the CS machine the font size is off but if you go full screen the labels dont overlap. Helpful for grading though I like the tiles Asthetic more in the sdtandard window.
 
