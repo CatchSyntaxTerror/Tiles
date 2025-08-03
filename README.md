@@ -1,4 +1,4 @@
-# TileBoard Simulation
+# Tiles
 
 This was my **first large-scale Java project**, built for my Large Programs class at the University of New Mexico. It served as a crash course in managing complexity, threading, and GUI logic — and while the code is a little funky in places (early-project charm), it reflects my growth as a developer.
 
